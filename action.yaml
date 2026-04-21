@@ -77,7 +77,9 @@ runs:
         go-version: 1.23
     - name: "Install go-testreport"
       shell: bash
-      run: go install github.com/becheran/go-testreport@90efc1ce13c872f23d6bc8a069527c26288b8f9c # v0.3.2
+      run: |
+        cd $GITHUB_ACTION_PATH
+        go install github.com/becheran/go-testreport@90efc1ce13c872f23d6bc8a069527c26288b8f9c # v0.3.2
     - name: "Create Report"
       shell: bash
       run: go-testreport -vars="${{ inputs.templateVariables }}" -template="${{ inputs.template }}" -input="${{ inputs.input }}" -output="${{ inputs.output }}"
