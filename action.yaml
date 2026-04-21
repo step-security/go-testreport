@@ -87,7 +87,9 @@ runs:
         INPUT_TEMPLATE: ${{ inputs.template }}
         INPUT_FILE: ${{ inputs.input }}
         INPUT_OUTPUT: ${{ inputs.output }}
-      run: go-testreport -vars="$INPUT_VARS" -template="$INPUT_TEMPLATE" -input="$INPUT_FILE" -output="$INPUT_OUTPUT"
+      run: |
+        OUTPUT_PATH=$(eval echo "$INPUT_OUTPUT")
+        go-testreport -vars="$INPUT_VARS" -template="$INPUT_TEMPLATE" -input="$INPUT_FILE" -output="$OUTPUT_PATH"
 branding:
   icon: "check-circle"
   color: "blue"
