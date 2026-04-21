@@ -1,4 +1,4 @@
-name: Self Test
+name: Go
 
 on:
   push:
@@ -6,15 +6,60 @@ on:
   pull_request:
     branches: ["main"]
 
-permissions:
-  contents: read
-
 jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Markup Link Checker (mlc)
+        uses: becheran/mlc@v0.21.0
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: 1.22
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v1.63
+  test-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.22
+      - name: Install go-testreport
+        run: go install github.com/step-security/go-testreport@main
+      - name: Test
+        run: go test ./... -json | go-testreport -vars="Title:Test Report Linux" > $GITHUB_STEP_SUMMARY
+  test-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.22
+      - name: Install go-testreport
+        run: go install github.com/step-security/go-testreport@main
+      - name: Test
+        run: go test ./... -json | go-testreport -vars="Title:Test Report Windows" > $env:GITHUB_STEP_SUMMARY
   self-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.22
+      - name: Generate test report
+        run: go test ./... -json > report.json
       - name: Run go-testreport action
         uses: ./
         with:
-          input: test/sample.json
+          input: report.json

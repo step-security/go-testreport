@@ -78,8 +78,8 @@ runs:
     - name: "Install go-testreport"
       shell: bash
       run: |
-        go install github.com/becheran/go-testreport@90efc1ce13c872f23d6bc8a069527c26288b8f9c # v0.3.2
-        echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+        cd $GITHUB_ACTION_PATH
+        go install ./
     - name: "Create Report"
       shell: bash
       env:

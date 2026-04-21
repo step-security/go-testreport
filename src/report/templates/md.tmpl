@@ -1,0 +1,15 @@
+# {{if .Vars.Title}}{{.Vars.Title}}{{else}}Test Report{{end}}
+
+Total: {{.Tests}} ✔️ Passed: {{.Passed}} ⏩ Skipped: {{.Skipped}} ❌ Failed: {{.Failed}} ⏱️ Duration: {{.Duration}}
+{{range .PackageResult}}
+<details>
+    <summary>{{.PackageResult.Icon}} {{.Succeeded}}/{{len .Tests}} {{.Name.Path}}<b>{{.Name.Package}}</b> {{.Duration}}</summary>
+        {{range .Tests}}{{if eq .TestResult 2}}<blockquote>
+            <details>
+                <summary>{{.TestResult.Icon}} {{EscapeMarkdown .Name}} {{.Duration}}</summary><blockquote>
+
+{{range .Output}}{{if ne .Text ""}}`{{.Time.Format "15:04:05.000"}}` {{EscapeMarkdown .Text}}{{end}}{{end}}</blockquote>
+</details></blockquote>
+{{else}}
+{{.TestResult.Icon}} {{EscapeMarkdown .Name}} {{.Duration}}  {{end}}{{end}}
+</details>{{end}}
