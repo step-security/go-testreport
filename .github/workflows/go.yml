@@ -1,0 +1,20 @@
+name: Self Test
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run go-testreport action
+        uses: ./
+        with:
+          input: test/sample.json
