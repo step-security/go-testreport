@@ -1,6 +1,11 @@
 name: Auto Cherry-Pick from Upstream
 
 on:
+  workflow_run:
+    workflows: ["Release GitHub Actions"]
+    types:
+      - completed
+
   workflow_dispatch:
     inputs:
       base_branch:
@@ -15,9 +20,6 @@ on:
   pull_request:
     types: [opened, synchronize, labeled]
 
-  release:
-    types: [published]
-
 permissions:
   contents: write
   pull-requests: write
@@ -26,10 +28,10 @@ permissions:
 
 jobs:
   cherry-pick:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'release' || contains(fromJson(toJson(github.event.pull_request.labels)).*.name, 'review-required')
+    if: (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') || github.event_name == 'workflow_dispatch' || contains(fromJson(toJson(github.event.pull_request.labels)).*.name, 'review-required')
     uses: step-security/reusable-workflows/.github/workflows/auto_cherry_pick.yaml@v1
     with:
       original-owner: "becheran"
       repo-name: "go-testreport"
-      base_branch: ${{ inputs.base_branch }}
-      mode: ${{ github.event_name == 'pull_request' && 'verify' || inputs.mode }}
+      base_branch: ${{ inputs.base_branch || 'main' }}
+      mode: ${{ github.event_name == 'pull_request' && 'verify' || inputs.mode || 'cherry-pick' }}
