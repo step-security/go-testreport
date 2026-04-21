@@ -19,7 +19,7 @@ The default output sorts the tests by failing and slowest execution time.
 
 ### GitHub Actions
 
-The [Golang Test Report](https://github.com/step-security/go-testreport) from the marketplace can be used to integrate the go-testreport tool into a GitHub workflow:
+The [Golang Test Report](https://github.com/step-security/go-testreport) can be used to integrate the go-testreport tool into a GitHub workflow:
 
 ``` yaml
 - name: Test
