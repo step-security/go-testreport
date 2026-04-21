@@ -82,7 +82,12 @@ runs:
         echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
     - name: "Create Report"
       shell: bash
-      run: go-testreport -vars="${{ inputs.templateVariables }}" -template="${{ inputs.template }}" -input="${{ inputs.input }}" -output="${{ inputs.output }}"
+      env:
+        INPUT_VARS: ${{ inputs.templateVariables }}
+        INPUT_TEMPLATE: ${{ inputs.template }}
+        INPUT_FILE: ${{ inputs.input }}
+        INPUT_OUTPUT: ${{ inputs.output }}
+      run: go-testreport -vars="$INPUT_VARS" -template="$INPUT_TEMPLATE" -input="$INPUT_FILE" -output="$INPUT_OUTPUT"
 branding:
   icon: "check-circle"
   color: "blue"
