@@ -132,7 +132,7 @@ func TestPackageName(t *testing.T) {
 		{"", "", ""},
 		{"foo", "", "foo"},
 		{"foo/bar", "foo/", "bar"},
-		{"github.com/becheran/go-testreport", "github.com/becheran/", "go-testreport"},
+		{"github.com/step-security/go-testreport", "github.com/step-security/", "go-testreport"},
 		{"foo/", "foo/", ""},
 	}
 	for _, s := range suite {
@@ -156,13 +156,13 @@ func TestParseTestJson(t *testing.T) {
 	}{
 		{"foo bar", report.Result{PackageResult: []report.PackageResult{}}, false},
 		{"{}", report.Result{PackageResult: []report.PackageResult{}}, false},
-		{`{"Time":"` + timeStr + `","Action":"run","Package":"github.com/becheran/go-testreport","Test":"TestIsLess"}
-{"Time":"` + timeStr + `","Action":"pass","Package":"github.com/becheran/go-testreport","Test":"TestIsLess","Elapsed":0}
-{"Time":"` + timeStr + `","Action":"pass","Package":"github.com/becheran/go-testreport","Elapsed":1.117}
-{"Time":"` + timeStr + `","Action":"skip","Package":"github.com/becheran/foo","Elapsed":0}
+		{`{"Time":"` + timeStr + `","Action":"run","Package":"github.com/step-security/go-testreport","Test":"TestIsLess"}
+{"Time":"` + timeStr + `","Action":"pass","Package":"github.com/step-security/go-testreport","Test":"TestIsLess","Elapsed":0}
+{"Time":"` + timeStr + `","Action":"pass","Package":"github.com/step-security/go-testreport","Elapsed":1.117}
+{"Time":"` + timeStr + `","Action":"skip","Package":"github.com/step-security/foo","Elapsed":0}
 `, report.Result{Tests: 1, Passed: 1, Duration: time.Second, PackageResult: []report.PackageResult{
 			{
-				Name:          "github.com/becheran/go-testreport",
+				Name:          "github.com/step-security/go-testreport",
 				Duration:      1117000000,
 				PackageResult: report.FTSPass,
 				Succeeded:     1,
@@ -195,8 +195,8 @@ func TestPackageResultString(t *testing.T) {
 		str string
 	}{
 		{
-			report.PackageResult{Name: "github.com/becheran/go-testreport/cmd/TestReport", PackageResult: report.FTPSSkip},
-			"?       github.com/becheran/go-testreport/cmd/TestReport [no test files]",
+			report.PackageResult{Name: "github.com/step-security/go-testreport/cmd/TestReport", PackageResult: report.FTPSSkip},
+			"?       github.com/step-security/go-testreport/cmd/TestReport [no test files]",
 		},
 		{
 			report.PackageResult{Name: "foo", PackageResult: report.FTSPass, Duration: time.Second * 130},

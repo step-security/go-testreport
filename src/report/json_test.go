@@ -12,7 +12,7 @@ import (
 
 func TestUnmarshalTestAction(t *testing.T) {
 	const dateStr = "2022-12-27T20:45:01.5635437+01:00"
-	const in = `{"Time":"` + dateStr + `","Action":"output","Package":"github.com/becheran/wildmatch-go","Test":"TestIsMatch/___#04","Output":"    --- PASS: TestIsMatch/___#04 (0.00s)\n"}`
+	const in = `{"Time":"` + dateStr + `","Action":"output","Package":"github.com/step-security/wildmatch-go","Test":"TestIsMatch/___#04","Output":"    --- PASS: TestIsMatch/___#04 (0.00s)\n"}`
 	var evt report.TestEvent
 
 	err := json.Unmarshal([]byte(in), &evt)
@@ -23,7 +23,7 @@ func TestUnmarshalTestAction(t *testing.T) {
 	assert.Equal(t, evt, report.TestEvent{
 		Time:    date,
 		Action:  report.TAOutput,
-		Package: "github.com/becheran/wildmatch-go",
+		Package: "github.com/step-security/wildmatch-go",
 		Test:    "TestIsMatch/___#04",
 		Output:  "    --- PASS: TestIsMatch/___#04 (0.00s)\n",
 	})
